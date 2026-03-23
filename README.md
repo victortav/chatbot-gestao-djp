@@ -28,13 +28,106 @@ FREQUENCY_API_URL=https://sua-api.com/frequencias
 FREQUENCY_API_TOKEN=
 ```
 
+## Rodando tudo com Docker
+
+Esse e o caminho mais simples, porque nao depende do Node instalado na sua maquina.
+
+1. Copie o arquivo de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+No Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+2. Se quiser testar sem OpenAI real no comeco, deixe no `.env`:
+
+```env
+USE_MOCK_OPENAI=true
+```
+
+3. Suba tudo:
+
+```bash
+docker compose up --build
+```
+
+Isso sobe:
+
+- `app`: NestJS em `http://localhost:3000`
+- `postgres`: PostgreSQL em `localhost:5432`
+
+## Problemas comuns com OpenAI no Docker
+
+Se `USE_MOCK_OPENAI=false` e a chamada para OpenAI falhar com algo como:
+
+```text
+Connection error
+certificate verify failed
+Connection reset by peer
+```
+
+isso normalmente indica problema de TLS/certificado no container, e nao erro no PostgreSQL.
+
+Esse cenario e comum em redes corporativas com proxy, firewall ou inspecao SSL.
+
+### O que verificar
+
+1. Confirme se o `.env` contem uma chave valida:
+
+```env
+OPENAI_API_KEY=sk-...
+USE_MOCK_OPENAI=false
+```
+
+2. Recrie os containers apos alterar o `.env`:
+
+```bash
+docker compose down
+docker compose up --build
+```
+
+3. Teste a conectividade de dentro do container:
+
+```bash
+docker compose run --rm app sh -lc 'wget -qO- https://api.openai.com/v1/models'
+```
+
+Se aparecer erro de certificado, o container nao confia na cadeia TLS usada pela sua rede.
+
+### Solucoes praticas
+
+- Para seguir desenvolvendo agora:
+
+```env
+USE_MOCK_OPENAI=true
+```
+
+- Para usar OpenAI real em rede corporativa:
+  - adicionar o certificado raiz corporativo no container
+  - ou trocar a imagem base para uma variante Debian e configurar os certificados do ambiente
+
+### Logs uteis
+
+```bash
+docker compose logs -f app
+```
+
+```bash
+docker compose run --rm app sh
+```
+
 ## Banco local com Docker
 
 ```bash
 docker compose up -d
 ```
 
-## Rodando o projeto
+## Rodando o projeto sem Docker para o Node
 
 ```bash
 npm install

@@ -9,47 +9,47 @@ import {
 @Entity({ name: 'frequency_submissions' })
 export class FrequencySubmission {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ name: 'phone_number', length: 30 })
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @Column({ name: 'source_text', type: 'text' })
-  sourceText: string;
+  sourceText!: string;
 
   @Column({ type: 'date' })
-  date: string;
+  date!: string;
 
   @Column({ name: 'church_name', length: 255 })
-  churchName: string;
+  churchName!: string;
 
   @Column({ name: 'attendance_total', type: 'int' })
-  attendanceTotal: number;
+  attendanceTotal!: number;
 
   @Column({ name: 'gps_children', type: 'int' })
-  gpsChildren: number;
+  gpsChildren!: number;
 
   @Column({ type: 'int' })
-  vips: number;
+  vips!: number;
 
   @Column({ name: 'parking_vehicles', type: 'int' })
-  parkingVehicles: number;
+  parkingVehicles!: number;
 
   @Column({ type: 'text', default: '' })
-  observations: string;
+  observations!: string;
 
   @Column({ default: false })
-  confirmed: boolean;
+  confirmed!: boolean;
 
   @Column({ default: 'pending' })
-  status: string;
+  status!: string;
 
   @Column({ name: 'external_response', type: 'jsonb', nullable: true })
-  externalResponse: Record<string, unknown> | null;
+  externalResponse!: Record<string, unknown> | null;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

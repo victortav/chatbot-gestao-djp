@@ -2,10 +2,10 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class ExtractFrequencyDto {
   @IsString()
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @IsString()
-  message: string;
+  message!: string;
 
   @IsOptional()
   @IsString()

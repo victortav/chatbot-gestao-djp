@@ -1,4 +1,30 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatbot-gestao-djp-app
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      PORT: 3000
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: chatbot_gestao_djp
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-5-mini}
+      USE_MOCK_OPENAI: ${USE_MOCK_OPENAI:-true}
+      FREQUENCY_API_URL: ${FREQUENCY_API_URL:-}
+      FREQUENCY_API_TOKEN: ${FREQUENCY_API_TOKEN:-}
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
   postgres:
     image: postgres:16-alpine
     container_name: chatbot-gestao-djp-postgres

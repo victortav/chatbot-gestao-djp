@@ -2,10 +2,10 @@ import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class ConfirmFrequencyDto {
   @IsString()
-  extractionId: string;
+  extractionId!: string;
 
   @IsBoolean()
-  confirmed: boolean;
+  confirmed!: boolean;
 
   @IsOptional()
   @IsString()
